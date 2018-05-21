@@ -51,6 +51,7 @@ go_library(
     importpath = "gvisor.googlesource.com/gvisor/pkg/tcpip/transport/tcp",
     visibility = ["//visibility:public"],
     deps = [
+        "//pkg/log",
         "//pkg/sleep",
         "//pkg/state",
         "//pkg/tcpip",
