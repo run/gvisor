@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
+    "gvisor.googlesource.com/gvisor/pkg/log"
 	"gvisor.googlesource.com/gvisor/pkg/sleep"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip/buffer"
@@ -381,6 +382,8 @@ func (h *handshake) resolveRoute() *tcpip.Error {
 
 // execute executes the TCP 3-way handshake.
 func (h *handshake) execute() *tcpip.Error {
+    log.Infof("wrz real do the 3-way handshake")
+
 	if h.ep.route.IsResolutionRequired() {
 		if err := h.resolveRoute(); err != nil {
 			return err
@@ -762,6 +765,7 @@ func (e *endpoint) handleSegments() *tcpip.Error {
 		if e.probe != nil {
 			e.probe(e.completeState())
 		}
+        log.Infof("wrz handleSegments()")
 
 		if s.flagIsSet(flagRst) {
 			if e.rcv.acceptable(s.sequenceNumber, 0) {

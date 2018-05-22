@@ -7,6 +7,7 @@ package tcp
 import (
 	"container/heap"
 
+    "gvisor.googlesource.com/gvisor/pkg/log"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip/seqnum"
 )
 
@@ -153,6 +154,7 @@ func (r *receiver) consumeSegment(s *segment, segSeq seqnum.Value, segLen seqnum
 func (r *receiver) handleRcvdSegment(s *segment) {
 	// We don't care about receive processing anymore if the receive side
 	// is closed.
+    log.Infof("wrz receiver's handleRcvdSegment()")
 	if r.closed {
 		return
 	}

@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+    "gvisor.googlesource.com/gvisor/pkg/log"
 	"gvisor.googlesource.com/gvisor/pkg/sleep"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip/header"
@@ -225,6 +226,8 @@ func (l *listenContext) createConnectedEndpoint(s *segment, iss seqnum.Value, ir
 func (l *listenContext) createEndpointAndPerformHandshake(s *segment, opts *header.TCPSynOptions) (*endpoint, *tcpip.Error) {
 	// Create new endpoint.
 	irs := s.sequenceNumber
+    log.Infof("wrz createEndpointAndPerformHandshake()")
+
 	cookie := l.createCookie(s.id, irs, encodeMSS(opts.MSS))
 	ep, err := l.createConnectedEndpoint(s, cookie, irs, opts)
 	if err != nil {
@@ -275,6 +278,7 @@ func (e *endpoint) deliverAccepted(n *endpoint) {
 func (e *endpoint) handleSynSegment(ctx *listenContext, s *segment, opts *header.TCPSynOptions) {
 	defer decSynRcvdCount()
 	defer s.decRef()
+    log.Infof("wrz handleSynSegment()")
 
 	n, err := ctx.createEndpointAndPerformHandshake(s, opts)
 	if err != nil {
@@ -287,6 +291,7 @@ func (e *endpoint) handleSynSegment(ctx *listenContext, s *segment, opts *header
 // handleListenSegment is called when a listening endpoint receives a segment
 // and needs to handle it.
 func (e *endpoint) handleListenSegment(ctx *listenContext, s *segment) {
+    log.Infof("wrz handleListenSegment()")
 	switch s.flags {
 	case flagSyn:
 		opts := parseSynSegmentOptions(s)

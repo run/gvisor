@@ -8,6 +8,7 @@ import (
 	"math"
 	"time"
 
+    "gvisor.googlesource.com/gvisor/pkg/log"
 	"gvisor.googlesource.com/gvisor/pkg/sleep"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip"
 	"gvisor.googlesource.com/gvisor/pkg/tcpip/buffer"
@@ -525,6 +526,9 @@ func (s *sender) updateCwnd(packetsAcked int) {
 // updating the send-related state.
 func (s *sender) handleRcvdSegment(seg *segment) {
 	// Check if we can extract an RTT measurement from this ack.
+
+    log.Infof("wrz sender's handleRcvdSegment()")
+
 	if s.rttMeasureSeqNum.LessThan(seg.ackNumber) {
 		s.updateRTO(time.Now().Sub(s.rttMeasureTime))
 		s.rttMeasureSeqNum = s.sndNxt
